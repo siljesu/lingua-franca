@@ -265,6 +265,11 @@ public class TargetConfig {
     public final RustTargetConfig rust = new RustTargetConfig();
 
     /**
+     * If true, lfc outputs smt files for the program using Uclid5.
+     */
+    public VerificationOptions verification = new VerificationOptions();
+
+    /**
      * Settings related to clock synchronization.
      */
     public static class ClockSyncOptions {
@@ -349,7 +354,22 @@ public class TargetConfig {
     }
 
     /**
-     * If true, lfc outputs smt files for the program using Uclid5.
+     * Settings related to verification
      */
-    public boolean smt = false;
+    public static class VerificationOptions {
+        /**
+         * The engine used for verification
+         */
+        public String engine = null;
+
+        /**
+         * The tactic used for verification.
+         */
+        public String tactic = null;
+
+        /**
+         * The steps used in the generated model, if applicable.
+         */
+        public int steps = 0;
+    }
 }
