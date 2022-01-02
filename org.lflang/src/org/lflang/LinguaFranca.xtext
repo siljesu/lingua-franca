@@ -302,7 +302,7 @@ BooleanAtom:
 ;
 
 IDRef:
-    ID | 'prev' ID
+    ID // FIXME: Enable reference to a past variable value
 ;
 
 RelOp:
@@ -554,7 +554,7 @@ enum ModeTransition:
 // can be written as INV
 // FIXME: To be factored out!
 enum AttrName:
-    INVARIANT='inv' | PROPERTY='property';
+    PROPERTY='property' | AUXINV='aux' | INVARIANT='inv' | BOUND='bound';
 
 // Note: time units are not keywords, otherwise it would reserve
 // a lot of useful identifiers (like 's' or 'd').
@@ -586,7 +586,7 @@ Token:
     // Visibility modifiers
     'private' | 'public' |
     // Verification
-    'inv' | 'property' | 'prev' |
+    'property' | 'aux' | 'inv' | 'bound' |
     '!' | '==>' | '<==>' | '/\\' | '\\/' |
     '<=' | '==' | '>=' | 
     // Braces
