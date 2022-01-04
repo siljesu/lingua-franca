@@ -256,19 +256,23 @@ Attribute:
 ;
 
 ComponentRef:
-    var=[Variable]
-    | 'reaction' '[' rxn=SignedInt ']';
+    // var=[Variable] works...
+    // We want to include instantiations.
+    // var=VarRef // Does not work.
+    variable=[Variable] // Ports, actions, timers, stateVar
+    | container=[Instantiation] '.' id=ID // Would like to use VarRef but doesn't work.
+    | 'reaction' '[' number=SignedInt ']';
 
 // FIXME: Use the validator to make sure that first order logic is
 // used only when verification attributes are used.
 AttrParm:
     STRING
     | SignedInt
-    | PropositionalLogic
+    | LTLFormula
 ;
 
 /////////// For verification
-PropositionalLogic:
+LTLFormula:
     (propositions+=LogicalExpr)+
 ;
 
@@ -285,53 +289,33 @@ Disjunction returns LogicalExpr:
     left=Conjunction ('\\/' right=Conjunction)?;
 
 Conjunction returns LogicalExpr:
-    left=Inversion ('/\\' right=Inversion)?;
+    left=LTLBinary ('/\\' right=LTLBinary)?;
 
-Inversion returns LogicalExpr:
-    atom=LogicalAtom
-    | '!' negatom=LogicalAtom
+LTLBinary returns LogicalExpr:
+    left=LTLUnary ('U' right=LTLUnary)?;
+
+LTLUnary returns LogicalExpr:
+    LogicalAtom
+    | '!' LogicalAtom
+    | 'G' LogicalAtom
+    | 'F' LogicalAtom
+    | 'X' LogicalAtom
 ;
 
 // FIXME: putting () here instead of [] does not work.
 LogicalAtom returns LogicalExpr:
     BooleanAtom
-    | '[' expr=LogicalExpr ']'
+    | '[' LogicalExpr ']'
 ;
 
 BooleanAtom returns LogicalExpr:
     TRUE | FALSE
     | ComponentRef
-    | left=ArithExpr RelOp right=ArithExpr
+    | left=Expr RelOp right=Expr
 ;
 
 RelOp:
     '<' | '<=' | '==' | '>=' | '>'
-;
-
-ArithExpr:
-    Subtraction
-;
-
-Subtraction returns ArithExpr:
-    operands+=Addition ('-' operands+=Addition)*
-;
-
-Addition returns ArithExpr:
-    operands+=Division ('+' operands+=Division)*
-;
-
-Division returns ArithExpr:
-    operands+=Multiplication ('/' operands+=Multiplication)*
-;
-
-Multiplication returns ArithExpr:
-    operands+=ArithAtom ('*' operands+=ArithAtom)*
-;
-
-ArithAtom returns ArithExpr:
-    SignedInt
-    | ComponentRef
-    | '(' ArithExpr ')'
 ;
 
 /////////// For target parameters
@@ -549,12 +533,6 @@ enum BuiltinTrigger:
 enum ModeTransition:
     RESET='reset' | HISTORY='history';
 
-// PRE='pre' | POST='post' | PREPOST='prepost' |
-// can be written as INV
-// FIXME: To be factored out!
-enum AttrName:
-    PROPERTY='property' | AUXINV='aux' | INVARIANT='inv' | BOUND='bound';
-
 // Note: time units are not keywords, otherwise it would reserve
 // a lot of useful identifiers (like 's' or 'd').
 // The validator ensures the unit is valid.
@@ -584,9 +562,12 @@ Token:
     'logical' | 'physical' |
     // Visibility modifiers
     'private' | 'public' |
-    // Verification
-    'property' | 'aux' | 'inv' | 'bound' | 'rxn' |
+    // Verification attributes
+    'property' | 'aux' | 'inv' | 'bound' |
+    // Temporal logic operators
     '!' | '==>' | '<==>' | '/\\' | '\\/' |
+    'G' | 'F' | 'X' | 'U' |
+    // Comparison
     '<=' | '==' | '>=' | 
     // Braces
     '(' | ')' | '{' | '}' |
