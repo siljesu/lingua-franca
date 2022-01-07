@@ -517,12 +517,8 @@ public enum TargetProperty {
                         config.verification.engine = ASTUtils
                                 .toText(entry.getValue());
                         break;
-                    case TACTIC:
-                        config.verification.tactic = ASTUtils
-                                .toText(entry.getValue());
-                        break;
-                    case STEPS:
-                        config.verification.steps = ASTUtils
+                    case INDUCTION:
+                        config.verification.induction = ASTUtils
                                 .toInteger(entry.getValue());
                     default:
                         break;
@@ -1466,8 +1462,7 @@ public enum TargetProperty {
      */
     public enum VerificationOption implements DictionaryElement {
         ENGINE("engine", PrimitiveType.STRING),
-        TACTIC("tactic", PrimitiveType.STRING),
-        STEPS("steps", PrimitiveType.NON_NEGATIVE_INTEGER);
+        INDUCTION("induction", PrimitiveType.NON_NEGATIVE_INTEGER);
         
         public final PrimitiveType type;
         
