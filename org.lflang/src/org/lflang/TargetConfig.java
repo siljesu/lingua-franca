@@ -110,6 +110,7 @@ public class TargetConfig {
      * The first string is the definition itself, and the second string is the value to attribute to that definition, if any.
      * The second value could be left empty.
      */
+    // related to the ifdef in trace.h
     public Map<String, String> compileDefinitions = new HashMap<>();
 
     /**

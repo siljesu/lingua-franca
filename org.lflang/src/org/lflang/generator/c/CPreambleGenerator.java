@@ -75,9 +75,9 @@ public class CPreambleGenerator {
                     GeneratorBase.timeInTargetLanguage(advanceMessageInterval));
             }
         }
-        if (tracing != null) {
-            code.pr(generateTracingDefineDirective(tracing.traceFileName));
-        }
+//        if (tracing != null) {
+//            code.pr(generateTracingDefineDirective(tracing.traceFileName));
+//        }
         if (hasModalReactors) {
             code.pr("#define MODAL_REACTORS");
         }
@@ -108,12 +108,13 @@ public class CPreambleGenerator {
         return String.join("\n", directives);
     }
 
-    private static String generateTracingDefineDirective(String traceFileName) {
-        if (traceFileName == null) {
-            return "#define LINGUA_FRANCA_TRACE";
-        }
-        return "#define LINGUA_FRANCA_TRACE " + traceFileName;
-    }
+    // Remove this
+//    private static String generateTracingDefineDirective(String traceFileName) {
+//        if (traceFileName == null) {
+//            return "#define LINGUA_FRANCA_TRACE";
+//        }
+//        return "#define LINGUA_FRANCA_TRACE " + traceFileName;
+//    }
 
     /**
      * Initialize clock synchronization (if enabled) and its related options for a given federate.
