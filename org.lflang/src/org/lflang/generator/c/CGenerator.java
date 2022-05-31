@@ -1053,6 +1053,10 @@ public class CGenerator extends GeneratorBase {
      */
     private void pickCompilePlatform() {
         var OS = System.getProperty("os.name").toLowerCase();
+        // if platform target was set, use given platform instead 
+        if (targetConfig.platform != "") {
+            OS = targetConfig.platform;
+        }
         // FIXME: allow for cross-compiling
         if ((OS.indexOf("mac") >= 0) || (OS.indexOf("darwin") >= 0)) {
             if (mainDef != null && !targetConfig.useCmake) {
@@ -1070,6 +1074,12 @@ public class CGenerator extends GeneratorBase {
             if (mainDef != null && !targetConfig.useCmake) {
                 targetConfig.compileAdditionalSources.add(
                     "core" + File.separator + "platform" + File.separator + "lf_linux_support.c"
+                );
+            }
+        } else if (OS.indexOf("spike") >= 0) {
+            if (mainDef != null && !targetConfig.useCmake) {
+                targetConfig.compileAdditionalSources.add(
+                    "core" + File.separator + "platform" + File.separator + "lf_spike_support.c"
                 );
             }
         } else {

@@ -19,6 +19,7 @@ public class CCoreFilesUtils {
     ) {
         List<String> coreFiles = new ArrayList<>();
         coreFiles.addAll(getBaseCoreFiles());
+        coreFiles.addAll(getSpikeFiles());
         coreFiles.addAll(getPlatformFiles());
         if (isFederated) {
             coreFiles.addAll(getFederatedFiles());
@@ -76,6 +77,17 @@ public class CCoreFilesUtils {
         );
     }
 
+    private static List<String> getSpikeFiles() {
+        return List.of(
+            "spike/Makefile",
+            "spike/common/crt.S",
+            "spike/common/encoding.h",
+            "spike/common/link.ld",
+            "spike/common/syscall.c",
+            "spike/common/util.h"
+        );
+    }
+
     private static List<String> getPlatformFiles() {
         return List.of(
             "platform/lf_tag_64_32.h",
@@ -91,7 +103,9 @@ public class CCoreFilesUtils {
             "platform/lf_windows_support.c",
             "platform/lf_windows_support.h",
             "platform/lf_linux_support.c",
-            "platform/lf_linux_support.h"
+            "platform/lf_linux_support.h",
+            "platform/lf_spike_support.c",
+            "platform/lf_spike_support.h"
         );
     }
 

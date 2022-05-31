@@ -162,6 +162,14 @@ public enum TargetProperty {
             }),
     
     /**
+     * Directive to specify the platform for cross code generation.
+     */
+    PLATFORM("platform", PrimitiveType.STRING, Target.ALL,
+            (config, value, err) -> {
+                config.platform = ASTUtils.elementToSingleString(value);
+            }),
+
+    /**
      * Directive to generate a Dockerfile. This is either a boolean,
      * true or false, or a dictionary of options.
      */
