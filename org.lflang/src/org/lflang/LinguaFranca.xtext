@@ -74,7 +74,7 @@ ImportedReactor: reactorClass=[Reactor] ('as' name=ID)?;
  * Declaration of a reactor class.
  */
 Reactor:
-    {Reactor} (attributes+=Attribute)*
+    {Reactor}
     ((federated?='federated' | main?='main')? & realtime?='realtime'?) 'reactor' (name=ID)? 
     ('<' typeParms+=TypeParm (',' typeParms+=TypeParm)* '>')?
     ('(' parameters+=Parameter (',' parameters+=Parameter)* ')')?
@@ -194,7 +194,6 @@ Action:
     (':' type=Type)? ';'?;
 
 Reaction:
-    (attributes+=Attribute)*
     ('reaction')
     ('(' (triggers+=TriggerRef (',' triggers+=TriggerRef)*)? ')')?
     (sources+=VarRef (',' sources+=VarRef)*)?
@@ -245,96 +244,6 @@ Connection:
 Serializer:
     'serializer' type=STRING
 ;
-
-/////////// Attributes
-
-/**
- * Attributes of a reactor or reaction
- */
-Attribute:
-    '@' attrName=AttrName '(' attrParms+=AttrParm (',' attrParms+=AttrParm)* ')'
-;
-
-// FIXME: Use the validator to make sure that first order logic is
-// used only when verification attributes are used.
-AttrParm:
-    str=STRING          // property name
-    | int=SignedInt     // bound
-    | ltl=LTLFormula    // formula
-;
-
-/////////// For verification
-LTLFormula:
-    Equivalence;
-
-Equivalence:
-    left=Implication ('<==>' right=Implication)?;
-
-Implication:
-    left=Disjunction ('==>' right=Disjunction)?;
-
-Disjunction:
-    terms+=Conjunction ('\\/' terms+=Conjunction)*;
-
-Conjunction:
-    terms+=LTLBinary ('/\\' terms+=LTLBinary)*;
-
-LTLBinary:
-    LTLUnary (({Until.left=current} 'U' | {WeakUntil.left=current} 'W') ('[' relOp=RelOp time=TypedTime ']')? right=LTLUnary)?
-;
-
-LTLUnary:
-    formula=LogicalPrimary
-    | '!' {Negation} formula=LogicalPrimary
-    | 'X' {Next} formula=LogicalPrimary
-    | 'G' {Globally} ('[' relOp=RelOp time=TypedTime ']')? formula=LogicalPrimary
-    | 'F' {Finally} ('[' relOp=RelOp time=TypedTime ']')? formula=LogicalPrimary
-;
-
-// FIXME: putting () here instead of [] does not work.
-LogicalPrimary:
-    atom=AtomicProp
-    | {Equivalence} '[' left=LTLFormula ']'
-;
-
-// FIXME: This rule seems awkward. Too many levels of indirection.
-AtomicProp:
-    primitive=TRUE | primitive=FALSE
-    | component=ComponentRef
-    | {RelExpr} left=Expr relOp=RelOp right=Expr
-    | timing=TimingPredicate
-    // FIXME: Use ComponentRef in set and schedule
-    | {ReactionComp} (containers+=[Instantiation] '.')* 'reaction' '[' rxnId=SignedInt ']' // Reactions
-    | {SetPort} 'set' '(' (variable=[Variable] | (containers+=[Instantiation] '.')+ id=ID) ',' value=SignedInt ')'
-    | {PortPresent} 'present' '(' variable=[Variable] ')'
-    | {ScheduleAction} 'schedule' '(' variable=[Variable] ',' value=SignedInt ')'
-;
-
-// var=[Variable] works...
-// We want to include instantiations.
-// var=VarRef Does not work.
-// Would like to use VarRef but doesn't work. Maybe it's because of scoping.
-//
-// VarComp and PriorVarComp return states.
-// ReactionComp and OutputComp are predicates
-// on the current reaction and the output port.
-// Perhaps ComponentRef is a misnomer.
-ComponentRef:
-    {VarComp} (variable=[Variable] | (containers+=[Instantiation] '.')+ id=ID) // Ports, stateVar.
-    | {PriorVarComp} 'prev' '(' (variable=[Variable] | (containers+=[Instantiation] '.')+ id=ID) ')'
-;
-
-RelOp:
-    '==' | '!=' | '<' | '<=' | '>=' | '>';
-
-TimingPredicate:
-    // Used to denote no logical time has elapsed, in the case of
-    // a reaction in the main reactor triggering a nested reaction.
-    // This is different from "at 0 sec", which denotes a microstep delay.
-    {Simultaneous} 'simultaneous'
-    | {At} 'at' '(' time=TypedTime ')'
-    | {Within} 'within' '(' time=TypedTime ')'
-    | {After} 'after' '(' time=TypedTime ')';
 
 /////////// For target parameters
 
@@ -580,13 +489,6 @@ Token:
     'logical' | 'physical' |
     // Visibility modifiers
     'private' | 'public' |
-    // Verification attributes
-    'property' | 'aux' | 'inv' | 'bound' |
-    // Verification helper predicates / variables
-    'within' | 'prev' | 'set' | 'present' | 'schedule' |
-    // Temporal logic operators
-    '!' | '==>' | '<==>' | '/\\' | '\\/' |
-    'G' | 'F' | 'X' | 'U' |
     // Comparison
     '<=' | '==' | '>=' | 
     // Braces
