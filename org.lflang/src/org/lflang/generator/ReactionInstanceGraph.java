@@ -115,6 +115,13 @@ public class ReactionInstanceGraph extends DirectedGraph<ReactionInstance.Runtim
         return maxBreadth;
     }
 
+    /**
+     * Return a set of reaction runtime instances.
+     */
+    public Set<ReactionInstance.Runtime> getNodes() {
+        return this.nodes();
+    }
+
     ///////////////////////////////////////////////////////////
     //// Protected methods
         
