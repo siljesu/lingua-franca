@@ -265,11 +265,6 @@ public class TargetConfig {
     public final RustTargetConfig rust = new RustTargetConfig();
 
     /**
-     * If true, lfc outputs smt files for the program using Uclid5.
-     */
-    public VerificationOptions verification = new VerificationOptions();
-
-    /**
      * Settings related to clock synchronization.
      */
     public static class ClockSyncOptions {

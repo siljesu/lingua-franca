@@ -503,31 +503,6 @@ public enum TargetProperty {
         config.rust.setCargoDependencies(CargoDependencySpec.parseAll(value));
     }),
 
-    /**
-     * Directive to generate smt files for formal analysis.
-     */
-    VERIFICATION("verification", DictionaryType.VERIFICATION_DICT, Target.ALL,
-        (config, value, err) -> {
-            // config.smt = ASTUtils.toBoolean(value);
-            for (KeyValuePair entry : value.getKeyvalue().getPairs()) {
-                VerificationOption option = (VerificationOption) DictionaryType.VERIFICATION_DICT
-                        .forName(entry.getName());
-                switch (option) {
-                    case ENGINE:
-                        config.verification.engine = ASTUtils.toText(entry.getValue());
-                        break;
-                    case TACTIC:
-                        config.verification.tactic = ASTUtils.toText(entry.getValue());
-                        break;
-                    case STEPS:
-                        config.verification.steps = ASTUtils.toInteger(entry.getValue());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }),
-
     ;
 
     /**
