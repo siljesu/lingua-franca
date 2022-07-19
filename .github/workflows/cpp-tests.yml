@@ -13,7 +13,7 @@ jobs:
   run:
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Check out lingua-franca repository
@@ -31,6 +31,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y clang-tidy
+        if: matrix.platform == 'ubuntu-latest'
+      - name: Install boost on Ubuntu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libboost-all-dev
         if: matrix.platform == 'ubuntu-latest'
       - name: Check out specific ref of reactor-cpp
         uses: actions/checkout@v2
