@@ -186,8 +186,8 @@ class AttributeSpec {
             List.of(new AttrParamSpec(AttributeSpec.VALUE_ATTR, AttrParamType.STRING, null))
         ));
 
-        // @property(name="<property_name>", tactic="<induction|bmc>", spec="<LTLu_spec>")
-        // LTLu is a variant of LTL with the bounded Until operator.
+        // @property(name="<property_name>", tactic="<induction|bmc>", spec="<SMTL_spec>")
+        // SMTL is the safety fragment of Metric Temporal Logic (MTL).
         ATTRIBUTE_SPECS_BY_NAME.put("property", new AttributeSpec(
             List.of(
                 new AttrParamSpec("name", AttrParamType.STRING, null),
