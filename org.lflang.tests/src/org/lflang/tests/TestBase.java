@@ -445,7 +445,7 @@ public abstract class TestBase {
      */
     protected void addExtraLfcArgs(Properties args) {
         args.setProperty("build-type", "Test");
-        // to be overridden
+        args.setProperty("logging", "Debug");
     }
 
 
