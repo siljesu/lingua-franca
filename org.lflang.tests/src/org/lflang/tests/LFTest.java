@@ -223,7 +223,7 @@ public class LFTest implements Comparable<LFTest> {
             Thread t = new Thread(() -> {
                 try (Reader reader = new InputStreamReader(inputStream)) {
                     int len;
-                    char[] buf = new char[1024];
+                    char[] buf = new char[4];
                     while ((len = reader.read(buf)) > 0) {
                         builder.append(buf, 0, len);
                     }
