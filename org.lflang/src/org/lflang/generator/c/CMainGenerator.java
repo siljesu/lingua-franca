@@ -52,6 +52,42 @@ public class CMainGenerator {
             "void loop() {}"
             );
         }
+        
+        if (targetConfig.platform == Platform.FREERTOS) {
+
+            return String.join("\n", 
+            "#include \"FreeRTOS.h\"",
+            "#include \"task.h\"",
+            "#include \"queue.h\"",
+            "#include \"timers.h\"",
+            "#include \"event_groups.h\"",
+            "#include \"board.h\"",
+            "#include \"clock_config.h\"",
+            "#include \"pin_mux.h\"",
+            "\n",
+            "struct arg_holder {",
+            "    int argc;",
+            "    char ** argv;",
+            "};",
+            "void vTask1( void *param )",
+            "{",
+            "struct arg_holder* arg_struct = (struct arg_holder*) param;",
+            "lf_reactor_c_main(arg_struct->argc, arg_struct->argv);",
+            "for( ;; );",
+            "}",
+            "int main(int argc, char* argv[]) {",
+            "BOARD_InitBootPins();",
+            "BOARD_InitBootClocks();",
+            "BOARD_InitDebugConsole();",
+            "struct arg_holder* arg_struct = malloc(sizeof(arg_struct));",
+            "arg_struct->argc = argc;",
+            "arg_struct->argv = argv;",
+            "xTaskCreate( vTask1,\"LF Task\",1000,arg_struct,1,NULL );",
+            "vTaskStartScheduler();",
+            "for( ;; );",
+            "}"
+            );
+        }
         return String.join("\n",
             "int main(int argc, const char* argv[]) {",
             "    return lf_reactor_c_main(argc, argv);",

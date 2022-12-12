@@ -1103,6 +1103,9 @@ public class CGenerator extends GeneratorBase {
         }
         if (osName.contains("arduino")) {
             return;
+        } else if (osName.contains("freertos")) {
+            return;
+            
         } else if (osName.contains("mac") || osName.contains("darwin")) {
             if (mainDef != null && !targetConfig.useCmake) {
                 targetConfig.compileAdditionalSources.add(
@@ -1846,7 +1849,7 @@ public class CGenerator extends GeneratorBase {
             List.of("--c_out="+this.fileConfig.getSrcGenPath(), filename),
             fileConfig.srcPath);
         if (protoc == null) {
-            errorReporter.reportError("Processing .proto files requires protoc-c >= 1.3.3.");
+            errorReporter.reportError("Processing .proto files requires proto-c >= 1.3.3.");
             return;
         }
         var returnCode = protoc.run(cancelIndicator);
