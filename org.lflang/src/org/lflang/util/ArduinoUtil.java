@@ -101,7 +101,7 @@ public class ArduinoUtil {
         }
         System.out.println("SUCCESS: Compiling generated code for " + fileConfig.name + " finished with no errors.");
         if (targetConfig.platformOptions.flash) {
-            if (targetConfig.platformOptions.port != null) {
+            if (targetConfig.platformOptions.port != "") {
                 System.out.println("Invoking flash command for Arduino");
                 LFCommand flash = commandFactory.createCommand(
                     "arduino-cli", List.of("upload", "-b", targetConfig.platformOptions.board, "-p", targetConfig.platformOptions.port), fileConfig.getSrcGenPath());

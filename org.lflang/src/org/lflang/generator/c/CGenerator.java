@@ -1922,14 +1922,14 @@ public class CGenerator extends GeneratorBase {
             targetConfig.compileDefinitions.put("MODAL_REACTORS", "TRUE");
         }
         if (targetConfig.threading && targetConfig.platformOptions.platform == Platform.ARDUINO
-            && (targetConfig.platformOptions.board == null || !targetConfig.platformOptions.board.contains("mbed"))) {
+            && (targetConfig.platformOptions.board == "" || !targetConfig.platformOptions.board.contains("mbed"))) {
             //non-MBED boards should not use threading
             System.out.println("Threading is incompatible on your current Arduino flavor. Setting threading to false.");
             targetConfig.threading = false;
         }
 
         if (targetConfig.platformOptions.platform == Platform.ARDUINO && !targetConfig.noCompile
-            && targetConfig.platformOptions.board == null) {
+            && targetConfig.platformOptions.board == "") {
             System.out.println("To enable compilation for the Arduino platform, you must specify the fully-qualified board name (FQBN) in the target property. For example, platform: {name: arduino, board: arduino:avr:leonardo}. Entering \"no-compile\" mode and generating target code only.");
             targetConfig.noCompile = true;
         }
