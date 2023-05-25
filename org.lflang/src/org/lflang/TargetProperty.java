@@ -1619,17 +1619,17 @@ public enum TargetProperty {
     }
   }
 
-  /**
-   * Platform options.
-   *
-   * @author Anirudh Rengarajan
-   */
+    /**
+     * Platform options.
+     * @author Anirudh Rengarajan
+     */
   public enum PlatformOption implements DictionaryElement {
     NAME("name", PrimitiveType.STRING),
     BAUDRATE("baud-rate", PrimitiveType.NON_NEGATIVE_INTEGER),
     BOARD("board", PrimitiveType.STRING),
     FLASH("flash", PrimitiveType.BOOLEAN),
-    PORT("port", PrimitiveType.STRING);
+    PORT("port", PrimitiveType.STRING),
+    USER_THREADS("user-threads", PrimitiveType.NON_NEGATIVE_INTEGER);
 
     public final PrimitiveType type;
 

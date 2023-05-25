@@ -363,60 +363,66 @@ public class TargetConfig {
     }
   }
 
-  /** Settings related to Platform Options. */
+  /**
+   * 
+   * Settings related to Platform Options.
+   */
   public static class PlatformOptions {
-
+    
     /**
-     * The base platform we build our LF Files on. Should be set to AUTO by default unless
-     * developing for specific OS/Embedded Platform
+     * The base platform we build our LF Files on. Should be set to AUTO by default unless developing for specific OS/Embedded Platform
      */
     public Platform platform = Platform.AUTO;
 
     /**
-     * The string value used to determine what type of embedded board we work with and can be used
-     * to simplify the build process. For example, when we want to flash to an Arduino Nano 33 BLE
-     * board, we can use the string arduino:mbed_nano:nano33ble
+     * The string value used to determine what type of embedded board we work with and can be used to simplify the build process. For example,
+     * when we want to flash to an Arduino Nano 33 BLE board, we can use the string arduino:mbed_nano:nano33ble
      */
     public String board = null;
 
+
     /**
-     * The string value used to determine the port on which to flash the compiled program (i.e.
-     * /dev/cu.usbmodem21301)
+     * The string value used to determine the port on which to flash the compiled program (i.e. /dev/cu.usbmodem21301)
      */
     public String port = null;
 
     /**
-     * The baud rate used as a parameter to certain embedded platforms. 9600 is a standard rate
-     * amongst systems like Arduino, so it's the default value.
+     * The baud rate used as a parameter to certain embedded platforms. 9600 is a standard rate amongst systems like Arduino, so it's the default value.
      */
     public int baudRate = 9600;
 
     /**
-     * The boolean statement used to determine whether we should automatically attempt to flash once
-     * we compile. This may require the use of board and port values depending on the infrastructure
-     * you use to flash the boards.
+     * The boolean statement used to determine whether we should automatically attempt to flash once we compile. This may require the use of board and
+     * port values depending on the infrastructure you use to flash the boards.
      */
     public boolean flash = false;
-  }
 
-  /** Settings related to tracing options. */
+    /** 
+     * The int value is used to determine the number of needed threads for the user application in Zephyr. 
+     */
+    public int userThreads = 0;
+    }   
+
+    /**
+     * Settings related to tracing options.
+     */
   public static class TracingOptions {
     /**
-     * The name to use as the root of the trace file produced. This defaults to the name of the .lf
-     * file.
+     * The name to use as the root of the trace file produced.
+     * This defaults to the name of the .lf file.
      */
     public String traceFileName = null;
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-        return false;
-      }
-      TracingOptions that = (TracingOptions) o;
-      return Objects.equals(traceFileName, that.traceFileName); // traceFileName may be null
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TracingOptions that = (TracingOptions) o;
+        return Objects.equals(traceFileName, that.traceFileName); // traceFileName may be null
     }
   }
 }
