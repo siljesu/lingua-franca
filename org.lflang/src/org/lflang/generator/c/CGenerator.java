@@ -1989,7 +1989,7 @@ public class CGenerator extends GeneratorBase {
     }
     if (targetConfig.threading
         && targetConfig.platformOptions.platform == Platform.ARDUINO
-        && (targetConfig.platformOptions.board == null
+        && (targetConfig.platformOptions.board == ""
             || !targetConfig.platformOptions.board.contains("mbed"))) {
       // non-MBED boards should not use threading
       System.out.println(
@@ -1999,7 +1999,7 @@ public class CGenerator extends GeneratorBase {
 
     if (targetConfig.platformOptions.platform == Platform.ARDUINO
         && !targetConfig.noCompile
-        && targetConfig.platformOptions.board == null) {
+        && targetConfig.platformOptions.board == "") {
       System.out.println(
           "To enable compilation for the Arduino platform, you must specify the fully-qualified"
               + " board name (FQBN) in the target property. For example, platform: {name: arduino,"

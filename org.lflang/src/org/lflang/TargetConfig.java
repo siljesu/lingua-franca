@@ -378,13 +378,12 @@ public class TargetConfig {
      * The string value used to determine what type of embedded board we work with and can be used to simplify the build process. For example,
      * when we want to flash to an Arduino Nano 33 BLE board, we can use the string arduino:mbed_nano:nano33ble
      */
-    public String board = null;
-
+    public String board = "";
 
     /**
      * The string value used to determine the port on which to flash the compiled program (i.e. /dev/cu.usbmodem21301)
      */
-    public String port = null;
+    public String port = "";
 
     /**
      * The baud rate used as a parameter to certain embedded platforms. 9600 is a standard rate amongst systems like Arduino, so it's the default value.

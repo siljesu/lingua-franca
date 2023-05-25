@@ -121,7 +121,7 @@ public class CCmakeGenerator {
       cMakeCode.pr("# Set default configuration file. To add custom configurations,");
       cMakeCode.pr("# pass -- -DOVERLAY_CONFIG=my_config.prj to either cmake or west");
       cMakeCode.pr("set(CONF_FILE prj_lf.conf)");
-      if (targetConfig.platformOptions.board != null) {
+      if (targetConfig.platformOptions.board != "") {
         cMakeCode.pr("# Selecting board specified in target property");
         cMakeCode.pr("set(BOARD " + targetConfig.platformOptions.board + ")");
       } else {

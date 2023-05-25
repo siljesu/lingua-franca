@@ -68,7 +68,7 @@ public class ArduinoUtil {
         var fileWriter = new FileWriter(testScript.getAbsoluteFile(), true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         String board =
-            targetConfig.platformOptions.board != null
+            targetConfig.platformOptions.board != ""
                 ? targetConfig.platformOptions.board
                 : "arduino:avr:leonardo";
         String isThreaded =
@@ -119,7 +119,7 @@ public class ArduinoUtil {
     System.out.println(
         "SUCCESS: Compiling generated code for " + fileConfig.name + " finished with no errors.");
     if (targetConfig.platformOptions.flash) {
-      if (targetConfig.platformOptions.port != null) {
+      if (targetConfig.platformOptions.port != "") {
         System.out.println("Invoking flash command for Arduino");
         LFCommand flash =
             commandFactory.createCommand(

@@ -445,6 +445,9 @@ public enum TargetProperty {
             case PORT:
               pair.setValue(ASTUtils.toElement(config.platformOptions.port));
               break;
+            case USER_THREADS:
+              pair.setValue(ASTUtils.toElement(config.platformOptions.userThreads));
+              break;
           }
           kvp.getPairs().add(pair);
         }
@@ -488,6 +491,9 @@ public enum TargetProperty {
                 break;
               case PORT:
                 config.platformOptions.port = ASTUtils.elementToSingleString(entry.getValue());
+                break;
+              case USER_THREADS:
+                config.platformOptions.userThreads = ASTUtils.toInteger(entry.getValue());
                 break;
               default:
                 break;
