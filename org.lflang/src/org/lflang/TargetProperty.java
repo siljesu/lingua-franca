@@ -1815,4 +1815,18 @@ public enum TargetProperty {
       return this.type;
     }
   }
+
+  /**
+   * Directive to let the runtime generate code with both RTI and federate
+   *
+   * This option is only available for the Zephyr platform.
+   */
+  JOINT_RTI_ENABLED(
+    "joint-rti-enabled",
+    PrimitiveType.BOOLEAN,
+    List.of(Target.C),
+    (config) -> ASTUtils.toElement(config.jointRtiEnabled),
+    (config, value, err) -> {
+      config.jointRtiEnabled = ASTUtils.toBoolean(value);
+    }),
 }

@@ -424,4 +424,12 @@ public class TargetConfig {
         return Objects.equals(traceFileName, that.traceFileName); // traceFileName may be null
     }
   }
+
+  /**
+   * If true, the RTI will be deployed jointly with a federate. 
+   *
+   * This option is currently only used for the Zephyr platform.
+   */
+  public boolean jointRtiEnabled = false;
+
 }

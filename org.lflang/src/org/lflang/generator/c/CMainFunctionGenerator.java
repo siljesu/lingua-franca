@@ -56,12 +56,36 @@ public class CMainFunctionGenerator {
     } else if (targetConfig.platformOptions.platform == Platform.ZEPHYR) {
       // The Zephyr "runtime" does not terminate when main returns.
       //  Rather, {@code exit} should be called explicitly.
-      return String.join(
+
+      if (targetConfig.jointRtiEnabled) {
+        return String.join(
           "\n",
+          "#include \"../core/federated/RTI/rti_lib.h\"",
+          "#include \"core/platform.h\"",
           "void main(void) {",
-          "   int res = lf_reactor_c_main(0, NULL);",
-          "   exit(res);",
+          "lf_thread_t thread_id;",
+          "#ifdef _LF_CLOCK_SYNC_INITIAL",
+          "rti_set_args(NUMBER_OF_FEDERATES, \"Unidentified Federation\", 15047, clock_sync_init,
+                            _LF_CLOCK_SYNC_PERIOD_NS, _LF_CLOCK_SYNC_EXCHANGES_PER_INTERVAL);",
+          "#elif _LF_CLOCK_SYNC_ON",
+          "rti_set_args(NUMBER_OF_FEDERATES, \"Unidentified Federation\", 15047, clock_sync_on,
+                           _LF_CLOCK_SYNC_PERIOD_NS, _LF_CLOCK_SYNC_EXCHANGES_PER_INTERVAL);",
+          "#else _LF_CLOCK_SYNC_OFF",
+          "rti_set_args(NUMBER_OF_FEDERATES, \"Unidentified Federation\", 15047, clock_sync_off, 0, 0);",
+          "#endif",
+          "lf_initialize_clock();",
+          "lf_thread_create(&thread_id, lf_reactor_c_main, NULL);",
+          "int res = lf_rti_main();",
+          "exit(res);",
           "}");
+      } else {
+        return String.join(
+            "\n",
+            "void main(void) {",
+            "   int res = lf_reactor_c_main(0, NULL);",
+            "   exit(res);",
+            "}");
+          }
     } else {
       return String.join(
           "\n",

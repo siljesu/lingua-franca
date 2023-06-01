@@ -45,8 +45,12 @@ public class CTriggerObjectsGenerator {
     var code = new CodeBuilder();
     code.pr("void _lf_initialize_trigger_objects() {");
     code.indent();
-    // Initialize the LF clock.
-    code.pr(String.join("\n", "// Initialize the _lf_clock", "lf_initialize_clock();"));
+    if (targetConfig.jointRtiEnabled && targetConfig.platformOptions.platform == Platform.ZEPHYR) {
+      // For joint RTI function, the LF clock should be initialized in main.
+    } else {
+      // Initialize the LF clock.
+      code.pr(String.join("\n", "// Initialize the _lf_clock", "lf_initialize_clock();"));
+    }
 
     // Initialize tracing if it is enabled
     if (targetConfig.tracing != null) {
